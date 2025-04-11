@@ -226,7 +226,6 @@ def summarize_messages(
     # Assuming that the summarization LLM also needs at most max_tokens
     # that will be turned into at most max_summary_tokens, you can try
     # to process at most max_tokens * 2 - max_summary_tokens
-    max_total_tokens = max_tokens + max_remaining_tokens
     for i in range(total_summarized_messages, len(messages)):
         message = messages[i]
         if message.id is None:
@@ -242,14 +241,6 @@ def summarize_messages(
         # If we're still under max_tokens_to_summarize, update the potential cutoff point
         if n_tokens <= max_tokens_to_summarize:
             idx = i
-
-        # Check if we've exceeded the absolute maximum
-        if n_tokens > max_total_tokens:
-            raise ValueError(
-                f"`summarize_messages` cannot handle more than {max_total_tokens} tokens: "
-                f"resulting message history will exceed max_tokens limit ({max_tokens}). "
-                "Please adjust `max_tokens` / `max_summary_tokens` or decrease the input size."
-            )
 
     # If we haven't exceeded max_tokens, we don't need to summarize
     # Note: we don't return here since we might still need to include the existing summary
