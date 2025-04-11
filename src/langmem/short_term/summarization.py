@@ -241,6 +241,9 @@ def summarize_messages(
         # If we're still under max_tokens_to_summarize, update the potential cutoff point
         if n_tokens <= max_tokens_to_summarize:
             idx = i
+        else:
+            idx = len(messages) - 1
+            break
 
     # If we haven't exceeded max_tokens, we don't need to summarize
     # Note: we don't return here since we might still need to include the existing summary
